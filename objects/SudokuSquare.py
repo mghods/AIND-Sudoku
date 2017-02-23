@@ -2,8 +2,8 @@ import pygame
 
 from pygame import *
 
-def AAfilledRoundedRect(surface,rect,color,radius=0.4):
 
+def AAfilledRoundedRect(surface,rect,color,radius=0.4):
     """
     AAfilledRoundedRect(surface,rect,color,radius=0.4)
 
@@ -18,33 +18,34 @@ def AAfilledRoundedRect(surface,rect,color,radius=0.4):
     alpha        = color.a
     color.a      = 0
     pos          = rect.topleft
-    rect.topleft = 0,0
-    rectangle    = Surface(rect.size,SRCALPHA)
+    rect.topleft = 0, 0
+    rectangle    = Surface(rect.size, SRCALPHA)
 
-    circle       = Surface([min(rect.size)*3]*2,SRCALPHA)
-    draw.ellipse(circle,(0,0,0),circle.get_rect(),0)
-    circle       = transform.smoothscale(circle,[int(min(rect.size)*radius)]*2)
+    circle       = Surface([min(rect.size)*3]*2, SRCALPHA)
+    draw.ellipse(circle, (0, 0, 0), circle.get_rect(), 0)
+    circle       = transform.smoothscale(circle, [int(min(rect.size)*radius)]*2)
 
-    radius              = rectangle.blit(circle,(0,0))
+    radius              = rectangle.blit(circle, (0, 0))
     radius.bottomright  = rect.bottomright
-    rectangle.blit(circle,radius)
+    rectangle.blit(circle, radius)
     radius.topright     = rect.topright
-    rectangle.blit(circle,radius)
+    rectangle.blit(circle, radius)
     radius.bottomleft   = rect.bottomleft
-    rectangle.blit(circle,radius)
+    rectangle.blit(circle, radius)
 
-    rectangle.fill((0,0,0),rect.inflate(-radius.w,0))
-    rectangle.fill((0,0,0),rect.inflate(0,-radius.h))
+    rectangle.fill((0, 0, 0), rect.inflate(-radius.w, 0))
+    rectangle.fill((0, 0, 0), rect.inflate(0, -radius.h))
 
-    rectangle.fill(color,special_flags=BLEND_RGBA_MAX)
-    rectangle.fill((255,255,255,alpha),special_flags=BLEND_RGBA_MIN)
+    rectangle.fill(color, special_flags=BLEND_RGBA_MAX)
+    rectangle.fill((255, 255, 255, alpha), special_flags=BLEND_RGBA_MIN)
 
-    return surface.blit(rectangle,pos)
+    return surface.blit(rectangle, pos)
+
 
 class SudokuSquare:
     """A sudoku square class."""
-    def __init__(self, number=None, offsetX=0, offsetY=0, edit="Y", xLoc=0, yLoc=0):
-        if number != None:
+    def __init__(self, number=None, offsetX = 0, offsetY = 0, edit="Y", xLoc = 0, yLoc = 0):
+        if number is not None:
             number = str(number)
             self.color = (2, 204, 186)
         else:
@@ -77,7 +78,6 @@ class SudokuSquare:
         # screen.blit(self.collide, self.collideRect)
         screen.blit(self.text, self.textpos)
 
-
     def checkCollide(self, collision):
         if len(collision) == 2:
             return self.collideRect.collidepoint(collision)
@@ -86,19 +86,16 @@ class SudokuSquare:
         else:
             return False
 
-
     def highlight(self):
         self.collide.fill((190, 190, 255))
         self.draw()
-
 
     def unhighlight(self):
         self.collide.fill((255, 255, 255, 255))
         self.draw()
 
-
     def change(self, number):
-        if number != None:
+        if number is not None:
             number = str(number)
         else:
             number = ""
@@ -109,7 +106,6 @@ class SudokuSquare:
             return 0
         else:
             return 1
-
 
     def currentLoc(self):
         return self.xLoc, self.yLoc
