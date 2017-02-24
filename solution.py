@@ -142,19 +142,20 @@ def naked_twins(values):
         # group boxes with 2 same values together
         for k in unit:
             if len(values[k]) == 2:
-                rev_unit_dict.setdefault(values[k], set())
-                rev_unit_dict[values[k]].add(k)
+                rev_unit_dict.setdefault(values[k], list())
+                rev_unit_dict[values[k]].append(k)
 
-        # only keep digits of groups with two boxes
-        twin_digits = [digits for digits in rev_unit_dict if len(rev_unit_dict[digits]) == 2]
+        # only keep one set of twins
+        naked_twins_list = [rev_unit_dict[digits] for digits in rev_unit_dict if len(rev_unit_dict[digits]) == 2]
 
         # Eliminate the naked twins as possibilities for their peers
-        for digits in twin_digits:
-            for digit in digits:
-                for box in unit:
-                    if (len(values[box]) > 2) and (digit in values[box]):
+        for twins in naked_twins_list:
+            # boxes at intersection of the twin peer sets cannot have the twin value digits
+            peers = sudoku_data()["peers"][twins[0]] & sudoku_data()["peers"][twins[1]]
+            for digit in values[twins[0]]:
+                for box in peers:
+                    if digit in values[box]:
                         assign_value(values, box, values[box].replace(digit, ''))
-
     return values
 
 
