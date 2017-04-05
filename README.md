@@ -3,13 +3,32 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: We first go through units and detect twins in each unit. Then apply the constraint
-(not having same value as possible twin values) to the boxes in intersection of the twin-boxes peers.
+A: Consider two peers (two boxes in the same unit) which can only accept two similar values (for example 1 and 9).
+One of these boxes should take value of 1 and the other value of 9, so none of their other peers (in the same unit)
+can have those values.
+
+In other words when two peers can only accept two values, they impose a constraint on all other peers (in the same unit)
+not to hold those two values.
+
+The naked twins strategy is particularly useful as it takes advantage of a disadvantageous setup. We have
+no clue on how to choose a value for any of the twins, but we know those two values should be eliminated from all other
+boxes in the unit. Most of the times elimination of those two values from other boxes in the unit helps us to solve
+other units which might in turn help us to come up with the values for the naked twins themselves.
+
+For implementing the naked twins strategy, we go through units and detect twins in each unit. Then
+apply the constraint (not having same value as possible twin values) to the boxes in intersection of the twin-boxes
+peers.
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: We keep everything the same except for adding the major diagonals to the units list.
-All the previous constraints now gets applied to diagonals as well.
+A: The diagonal sudoku adds two more units to the normal sudoku, forcing thatno box on the major diagonals of the sudoku
+board should have same number assigned. For example, if A1 has value 1 assigned B2, C3, D4, ... can not have value 1.
+
+In other words, the diagonal sudoku adds the board diagonals as two new units to which the main game constraints needs
+to hold - no box with the same value is allowed in a unit.
+
+For implementing the naked twins strategy, we keep everything the same except for adding the major diagonals to the
+units list. All the previous constraints now gets applied to diagonals as well.
 
 ### Install
 
